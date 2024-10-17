@@ -1,5 +1,7 @@
 # Chromia as a Transparent AI Database
 
+> The code are still in development. Please use it with caution and ensure to update the wallet address before using it in production.
+
 ## The Need for Transparency in AI
 How do we know if those viral "AI trading" accounts are actually using AI? Most Crypto x AI projects claim to use AI for trading, meme and tweet generation, but provide zero proof. This project solves that by recording all AI interactions on-chain, making them real time and publicly verifiable.
 
@@ -33,3 +35,4 @@ TODO:
 - [ ] Only allow admin to update the database 
 - [ ] Update Private Key in script
 - [ ] Simple display UI for transparency
+- [ ] Support Streaming
