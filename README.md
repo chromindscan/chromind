@@ -1,12 +1,14 @@
 # Chromia as a Transparent AI Database
 
-This project provides a web server that logs all OpenAI API requests and responses, storing them securely on the Chromia blockchain database. By capturing and recording interactions with OpenAI's models on a transparent and immutable ledger, this project aims to enhance the transparency and accountability of AI agents.
-
-To integrate it, simply run the server and update 4-lines of your OpenAI code.
-![](./demo.png)
-
 ## The Need for Transparency in AI
-We've seen many Crypto x AI Agent projects that position themselves as "AI-powered trading & meme-ing" solutions without providing any proof of their AI capabilities. This project leverages blockchain technology to store all AI interactions on-chain in real-time, making them verifiable by anyone.
+How do we know if those viral "AI trading" accounts are actually using AI? Most Crypto x AI projects claim to use AI for trading and meme generation, but provide zero proof. This project solves that by recording all AI interactions on-chain, making them publicly verifiable.
+
+## Introduction
+
+ Chromia as a Transparent AI Database is a web server that logs all AI model interactions (OpenAI, Ollama, OpenRouter) onto Chromia's blockchain, creating a verifiable record of AI activities. Integration requires just 4 lines of code.
+
+To integrate it, simply run the server and update 4-lines of your OpenAI code. It supports OpenAI, Ollama, OpenRouter (I've tested these so far!)
+![](./demo.png)
 
 ## Documentation
 
