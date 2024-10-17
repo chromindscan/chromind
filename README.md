@@ -24,3 +24,12 @@ To start the server
 ```
 deno run -A server/main.ts
 ```
+
+### Things to do before going production
+
+Current code are still in development, but the proof of concept is working.
+
+TODO:
+- [ ] Only allow admin to update the database 
+- [ ] Update Private Key in script
+- [ ] Simple display UI for transparency
