@@ -1,0 +1,10 @@
+blockchains:
+  openai-db:
+    module: main
+compile:
+  rellVersion: 0.13.5
+database:
+  schema: schema_openai_db
+test:
+  modules:
+    - test

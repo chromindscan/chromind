@@ -1,0 +1,165 @@
+module;
+
+entity open_ai_logs {
+    uuid: text;
+    key uuid;
+    chat_id: text;
+
+    // REQUEST
+    base_url: text;
+    request_model: text;
+    request_messages: json;
+    user_question: text;
+    request_raw: json;
+
+    // RESPONSE
+    response_object: text;
+    response_created: integer;
+    response_model: text;
+    response_system_fingerprint: text;
+    response_provider: text;
+    response_usage_prompt_tokens: integer;
+    response_usage_completion_tokens: integer;
+    response_usage_total_tokens: integer;
+    assistant_reply: text;
+    finish_reason: text;
+    response_raw: json;
+    created_at: integer = op_context.last_block_time;
+}
+
+struct open_ai_logs_dto {
+    uuid: text;
+    chat_id: text;
+    base_url: text;
+    request_model: text;
+    request_messages: json;
+    user_question: text;
+    request_raw: json;
+    response_object: text;
+    response_created: integer;
+    response_model: text;
+    response_system_fingerprint: text;
+    response_provider: text;
+    response_usage_prompt_tokens: integer;
+    response_usage_completion_tokens: integer;
+    response_usage_total_tokens: integer;
+    assistant_reply: text;
+    finish_reason: text;
+    response_raw: json;
+    created_at: integer;
+}
+
+operation add_log(
+    chat_id: text,
+    base_url: text,
+    request_model: text,
+    request_messages: json,
+    user_question: text,
+    request_raw: json,
+    response_object: text,
+    response_created: integer,
+    response_model: text,
+    response_system_fingerprint: text,
+    response_provider: text,
+    response_usage_prompt_tokens: integer,
+    response_usage_completion_tokens: integer,
+    response_usage_total_tokens: integer,
+    assistant_reply: text,
+    finish_reason: text,
+    response_raw: json
+) {
+    val uuid = request_model + "-" + chat_id + "-" + op_context.last_block_time;
+    create open_ai_logs (
+        uuid,
+        chat_id,
+        base_url,
+        request_model,
+        request_messages,
+        user_question,
+        request_raw,
+        response_object,
+        response_created,
+        response_model,
+        response_system_fingerprint,
+        response_provider,
+        response_usage_prompt_tokens,
+        response_usage_completion_tokens,
+        response_usage_total_tokens,
+        assistant_reply,
+        finish_reason,
+        response_raw
+    );
+}
+
+query get_log(chat_id: text): open_ai_logs_dto {
+    return open_ai_logs @ {
+        .chat_id == chat_id
+    } (
+        open_ai_logs_dto (
+            .uuid,
+            .chat_id,
+            .base_url,
+            .request_model,
+            .request_messages,
+            .user_question,
+            .request_raw,
+            .response_object,
+            .response_created,
+            .response_model,
+            .response_system_fingerprint,
+            .response_provider,
+            .response_usage_prompt_tokens,
+            .response_usage_completion_tokens,
+            .response_usage_total_tokens,
+            .assistant_reply,
+            .finish_reason,
+            .response_raw,
+            .created_at
+        )
+    );
+}
+
+query get_logs_count() {
+    return open_ai_logs @ { } (
+        @sum 1
+    );
+}
+
+query get_logs(
+    start_time: integer,
+    end_time: integer,
+    pointer: integer,
+    n_prompts: integer,
+): (pointer: integer, logs: list<open_ai_logs_dto>) {
+    val logs = open_ai_logs @* {
+        .created_at > start_time,
+        .created_at < end_time,
+    } (
+        @sort_desc @omit .created_at,
+        open_ai_logs_dto (
+            uuid = .uuid,
+            chat_id = .chat_id,
+            base_url = .base_url,
+            request_model = .request_model,
+            request_messages = .request_messages,
+            user_question = .user_question,
+            request_raw = .request_raw,
+            response_object = .response_object,
+            response_created = .response_created,
+            response_model = .response_model,
+            response_system_fingerprint = .response_system_fingerprint,
+            response_provider = .response_provider,
+            response_usage_prompt_tokens = .response_usage_prompt_tokens,
+            response_usage_completion_tokens = .response_usage_completion_tokens,
+            response_usage_total_tokens = .response_usage_total_tokens,
+            assistant_reply = .assistant_reply,
+            finish_reason = .finish_reason,
+            response_raw = .response_raw,
+            created_at = .created_at
+        )
+    ) offset pointer limit n_prompts;
+    return (
+        pointer = pointer + logs.size(),
+        logs = logs
+    );
+}
