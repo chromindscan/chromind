@@ -16,13 +16,19 @@ To integrate it, simply run the server and update 4-lines of your OpenAI code. I
 
 
 ### Requirements
-- Chromia CLI Installed
+- [Chromia CLI](https://docs.chromia.com/intro/installation/cli-installation) Installed
 - PostgreSQL installed
-- Deno v2
+- [Deno v2](https://deno.com/)
 
+### How to run
+Start chromia dev server in your terminal
+```
+cd openai_db
+chr node start
+```
 
-### To run
-To start the server
+Then start the server
+
 ```
 deno run -A server/main.ts
 ```
@@ -32,7 +38,8 @@ deno run -A server/main.ts
 Current code are still in development, but the proof of concept is working.
 
 TODO:
-- [ ] Only allow admin to update the database 
+- [ ] Add in permission to only allow admin to update the database 
 - [ ] Update Private Key in script
 - [ ] Simple display UI for transparency
 - [ ] Support Streaming
+- [ ] Dockerize
