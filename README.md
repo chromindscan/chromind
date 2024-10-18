@@ -15,7 +15,7 @@ This project solves that by recording all AI interactions on-chain, making them 
 
  Chromia as a Transparent AI Database is a web server that logs all AI model interactions (OpenAI, Ollama, OpenRouter) onto Chromia's blockchain, creating a verifiable record of AI activities. Integration requires just 4 lines of code.
 
-To integrate it, simply run the server and update 4-lines of your OpenAI code. It supports OpenAI, Ollama, OpenRouter (I've tested these so far!)
+To integrate it, simply run the server and **update 4-lines of your OpenAI code**. It supports OpenAI, Ollama, OpenRouter (I've tested these so far!)
 ![](./demo.png)
 
 ## Documentation
