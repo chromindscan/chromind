@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OpenAI Explorer</title>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f2f5;
+      padding: 20px;
+      color: #333;
+    }
+
+    #app {
+      max-width: 1200px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 30px;
+      font-size: 2.5em;
+    }
+
+    .status-message {
+      text-align: center;
+      margin: 20px 0;
+      font-size: 1.2em;
+    }
+
+    .loading {
+      color: #2980b9;
+    }
+
+    .error {
+      color: #e74c3c;
+    }
+
+    .table-container {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+      table-layout: fixed;
+    }
+
+    th, td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+      word-wrap: break-word;
+      max-width: 200px;
+    }
+
+    th {
+      background-color: #f7f7f7;
+      color: #34495e;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+    tbody tr {
+      cursor: pointer;
+    }
+
+    tbody tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    .expandable-row {
+      background-color: #fafafa;
+    }
+
+    .expandable-content {
+      padding: 15px;
+      border-top: 1px solid #ddd;
+      background-color: #f9f9f9;
+    }
+
+    .expand-icon {
+      transition: transform 0.3s ease;
+    }
+
+    tr.expanded .expand-icon {
+      transform: rotate(180deg);
+    }
+
+    pre {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
+    @media (max-width: 768px) {
+      th {
+        display: none;
+      }
+
+      td {
+        display: block;
+        padding: 10px;
+        position: relative;
+        padding-left: 50%;
+      }
+
+      td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 0;
+        width: 45%;
+        padding-left: 15px;
+        font-weight: bold;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <h1>{{ message }}</h1>
+    
+    <div v-if="isLoading" class="status-message loading">Loading logs...</div>
+    <div v-if="error" class="status-message error">{{ error }}</div>
+    
+    <div v-if="!isLoading && !error" class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 30px"></th>
+            <th style="width: 15%">UUID</th>
+            <th style="width: 15%">Chat ID</th>
+            <th style="width: 25%">User Question</th>
+            <th style="width: 25%">Assistant Reply</th>
+            <th style="width: 20%">Created At</th>
+          </tr>
+        </thead>
+        <tbody>
+          <template v-for="log in logs" :key="log.uuid">
+            <tr 
+              v-if="log && log.uuid"
+              @click="toggleExpand(log.uuid)"
+              :class="{ expanded: expandedRows.includes(log.uuid) }"
+            >
+              <td>
+                <svg class="expand-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 011.708-.708L8 10.293l4.646-4.647a.5.5 0 11.708.708l-5 5a.5.5 0 01-.708 0l-5-5z"/>
+                </svg>
+              </td>
+              <td data-label="UUID">{{ log.uuid }}</td>
+              <td data-label="Chat ID">{{ log.chat_id }}</td>
+              <td data-label="User Question">{{ log.user_question }}</td>
+              <td data-label="Assistant Reply">{{ log.assistant_reply }}</td>
+              <td data-label="Created At">{{ formatTimestamp(log.created_at) }}</td>
+            </tr>
+            <tr v-if="log && log.uuid && expandedRows.includes(log.uuid)" class="expandable-row">
+              <td colspan="6" class="expandable-content">
+                <strong>Detailed Information:</strong>
+                <br>
+                <pre>{{ formatJSON(log) }}</pre>
+                <u>Request</u>
+                <pre>{{ JSON.parse(log.request_raw) }}</pre>
+                <u>Response</u>
+                <pre>{{ JSON.parse(log.response_raw) }}</pre>
+              </td>
+            </tr>
+          </template>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    const { createApp } = Vue;
+
+    createApp({
+      data() {
+        return {
+          logs: [],
+          message: "Chromia as a Transparent AI Database",
+          isLoading: true,
+          error: null,
+          expandedRows: []
+        };
+      },
+      methods: {
+        formatTimestamp(timestamp) {
+          if (!timestamp) return "N/A";
+          return new Date(timestamp).toLocaleString();
+        },
+        toggleExpand(uuid) {
+          const index = this.expandedRows.indexOf(uuid);
+          if (index > -1) {
+            this.expandedRows.splice(index, 1);
+          } else {
+            this.expandedRows.push(uuid);
+          }
+        },
+        formatJSON(log) {
+          if (!log) return "{}";
+          const { assistant_reply, chat_id, created_at, user_question, uuid, request_raw, response_raw, ...rest } = log;
+          return JSON.stringify(rest, null, 2);
+        },
+        async fetchLogs() {
+          try {
+            const queryParams = new URLSearchParams({
+              start_time: '0',
+              end_time: Date.now().toString()
+            });
+
+            const response = await fetch(`/logs?${queryParams.toString()}`);
+            if (!response.ok) {
+              throw new Error(`Network response was not ok: ${response.statusText}`);
+            }
+
+            const data = await response.json();
+            
+            if (Array.isArray(data)) {
+              this.logs = data.filter(log => log && log.uuid);
+            } else if (data.logs && Array.isArray(data.logs)) {
+              this.logs = data.logs.filter(log => log && log.uuid);
+            } else {
+              throw new Error("Invalid data format received from the server.");
+            }
+          } catch (err) {
+            console.error("Fetch error:", err);
+            this.error = "Failed to load logs. Please try again later.";
+          } finally {
+            this.isLoading = false;
+          }
+        }
+      },
+      mounted() {
+        this.fetchLogs();
+      }
+    }).mount("#app");
+  </script>
+</body>
+</html>

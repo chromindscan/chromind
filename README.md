@@ -39,6 +39,9 @@ Then start the server
 deno run -A server/main.ts
 ```
 
+Browse http://localhost:8000 to view the explorer
+![](./ui.jpeg)
+
 ### Things to do before going production
 
 Current code are still in development, but the proof of concept is working.
@@ -46,6 +49,6 @@ Current code are still in development, but the proof of concept is working.
 TODO:
 - [ ] Add in permission to only allow admin to update the database 
 - [ ] Update Private Key in script
-- [ ] Simple display UI for transparency
+- [x] Simple display UI for transparency
 - [ ] Support Streaming
 - [ ] Dockerize
