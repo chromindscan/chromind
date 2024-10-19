@@ -7,7 +7,7 @@
 
 How do we know if those viral "AI trading" accounts are actually using AI? Most Crypto x AI projects claim to use AI for trading, meme and tweet generation, but provide zero proof. 
 
-![](./cover.jpg)
+![](./cover.png)
 
 This project solves that by recording all AI interactions on-chain, making them real time and publicly verifiable.
 
@@ -17,6 +17,8 @@ This project solves that by recording all AI interactions on-chain, making them 
 
 To integrate it, simply run the server and **update 4-lines of your OpenAI code**. It supports OpenAI, Ollama, OpenRouter (I've tested these so far!)
 ![](./demo.png)
+
+![](./demo.mp4)
 
 ## Documentation
 
