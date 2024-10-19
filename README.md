@@ -18,8 +18,6 @@ This project solves that by recording all AI interactions on-chain, making them 
 To integrate it, simply run the server and **update 4-lines of your OpenAI code**. It supports OpenAI, Ollama, OpenRouter (I've tested these so far!)
 ![](./demo.png)
 
-![](./demo.gif)
-
 ## Documentation
 
 
