@@ -2,6 +2,7 @@
   "version": "4",
   "specifiers": {
     "jsr:@std/assert@1": "1.0.6",
+    "jsr:@std/dotenv@*": "0.225.2",
     "jsr:@std/internal@^1.0.4": "1.0.4",
     "jsr:@std/path@*": "1.0.6",
     "npm:@types/express@4.17.15": "4.17.15",
@@ -17,6 +18,9 @@
       "dependencies": [
         "jsr:@std/internal"
       ]
+    },
+    "@std/dotenv@0.225.2": {
+      "integrity": "e2025dce4de6c7bca21dece8baddd4262b09d5187217e231b033e088e0c4dd23"
     },
     "@std/internal@1.0.4": {
       "integrity": "62e8e4911527e5e4f307741a795c0b0a9e6958d0b3790716ae71ce085f755422"

@@ -3,10 +3,11 @@ import {
   newSignatureProvider,
   IClient,
 } from "npm:postchain-client@1.19.0";
+import "jsr:@std/dotenv/load";
 
 let chromiaClient: IClient;
 const signatureProvider = newSignatureProvider({
-  privKey: "0101010101010101010101010101010101010101010101010101010101010101",
+  privKey: Deno.env.get("CHROMIA_PRIVATE_KEY")!,
 });
 
 const initClient = async () => {
