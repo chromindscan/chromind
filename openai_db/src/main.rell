@@ -91,9 +91,9 @@ operation add_log(
     );
 }
 
-query get_log(chat_id: text): open_ai_logs_dto {
+query get_log(uuid: text): open_ai_logs_dto {
     return open_ai_logs @ {
-        .chat_id == chat_id
+        .uuid == uuid
     } (
         open_ai_logs_dto (
             .uuid,

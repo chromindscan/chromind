@@ -2,7 +2,7 @@
 import express from "npm:express@4.18.2";
 import { openaiRouter } from "./openaiRouter.ts";
 import * as path from "jsr:@std/path";
-import { getLogs } from "./chromia.ts";
+import { getLog, getLogs } from "./chromia.ts";
 
 const __dirname = path.dirname(path.fromFileUrl(import.meta.url));
 
@@ -12,6 +12,14 @@ app.use(express.json());
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
+});
+
+app.get("/log", (req, res) => {
+  res.sendFile(path.join(__dirname, "log.html"));
+})
+
+app.get("/log/:id", async (req, res) => {
+  return res.json(await getLog(req.params.id));
 });
 
 app.get("/logs", async (req, res) => {

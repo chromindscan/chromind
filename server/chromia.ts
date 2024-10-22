@@ -109,3 +109,15 @@ export async function getLogs(
   return logs;
 }
 
+export async function getLog(
+  uuid: string
+) {
+  const client = await initClient();
+  const log = await client.query({
+    name: "get_log",
+    args: {
+      uuid,
+    },
+  });
+  return log
+}
