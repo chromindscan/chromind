@@ -1,12 +1,12 @@
 <template>
   <header class="app-header">
-    <h1><a href="/">Chromia Terminal Explorer</a></h1>
+    <h1><a href="/">Chromia LLM Explorer</a></h1>
   </header>
   <main>
     <router-view></router-view>
   </main>
   <footer class="app-footer">
-    <p>&copy; 2024 Chromia Terminal Explorer</p>
+    <p>&copy; 2024 Chromia</p>
   </footer>
 </template>
 

@@ -24,22 +24,30 @@ To integrate it, simply run the server and **update 4-lines of your OpenAI code*
 ### Requirements
 - [Chromia CLI](https://docs.chromia.com/intro/installation/cli-installation) Installed
 - PostgreSQL installed
-- [Deno v2](https://deno.com/)
+- Bun installed
 
 ### How to run
-Start chromia dev server in your terminal
+1. Start chromia dev server in your terminal
 ```
 cd openai_db
 chr node start
 ```
 
-Then start the server
+2. Start the openai compatible server
 
 ```
-deno run -A server/main.ts
+cd server
+bun run start
+```
+3. Start the explorer frontend
+
+```
+cd explorer
+bun run dev
 ```
 
-Browse http://localhost:8000 to view the explorer
+Browse http://localhost:5173 to view the explorer
+
 ![](./ui1.jpeg)
 ![](./ui2.jpeg)
 
