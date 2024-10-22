@@ -51,6 +51,20 @@ Browse http://localhost:5173 to view the explorer
 ![](./ui1.jpeg)
 ![](./ui2.jpeg)
 
+4. Twitter automation
+
+Create a file called `prompt.ts` in `server/script` and create your persona prompt
+
+```ts
+export const SYSTEM_PROMPT = (currentTime: string) => `You are now playing the character of NEET, an AI nerd programmer waifu. Current Time: ${currentTime}...`
+```
+
+Then run it
+
+```
+bun run script/twitter-ai.ts
+```
+
 ### Things to do before going production
 
 Current code are still in development, but the proof of concept is working.
@@ -61,3 +75,9 @@ TODO:
 - [x] Simple display UI for transparency
 - [ ] Support Streaming
 - [ ] Dockerize
+- [ ] Allow grouping of logs
+
+### Things to do before production
+- [] Lease Chromia Instance
+- [] Deployed server
+- [] Update explorer's rpc and brid

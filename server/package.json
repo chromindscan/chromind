@@ -11,11 +11,15 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
+    "@getzep/zep-cloud": "^2.0.0",
+    "@getzep/zep-js": "^2.0.2",
     "buffer": "^6.0.3",
+    "cron": "^3.1.7",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "openai": "^4.68.1",
-    "postchain-client": "^1.19.0"
+    "postchain-client": "^1.19.0",
+    "twitter-api-v2": "^1.18.0"
   },
   "module": "index.ts",
   "type": "module"

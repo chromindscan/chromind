@@ -5,7 +5,7 @@ import { whitelistMiddleware } from "./whitelistMiddleware.ts";
 
 const router = Router();
 
-router.use(whitelistMiddleware);
+// router.use(whitelistMiddleware);
 
 router.get("/", (req, res) => {
   res.send("OpenAI Compatible Router on Chromia");
