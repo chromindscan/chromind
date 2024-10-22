@@ -40,7 +40,8 @@ deno run -A server/main.ts
 ```
 
 Browse http://localhost:8000 to view the explorer
-![](./ui.jpeg)
+![](./ui1.jpeg)
+![](./ui2.jpeg)
 
 ### Things to do before going production
 
