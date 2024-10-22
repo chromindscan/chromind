@@ -1,38 +1,16 @@
-// @deno-types="npm:@types/express@4.17.15"
-import express from "npm:express@4.18.2";
-import { openaiRouter } from "./openaiRouter.ts";
-import * as path from "jsr:@std/path";
-import { getLog, getLogs } from "./chromia.ts";
+import dotenv from "dotenv";
+dotenv.config();
 
-const __dirname = path.dirname(path.fromFileUrl(import.meta.url));
+import express from "express";
+import { openaiRouter } from "./openaiRouter.ts";
 
 const app = express();
 
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
+  res.json({"success": true})
 });
-
-app.get("/log", (req, res) => {
-  res.sendFile(path.join(__dirname, "log.html"));
-})
-
-app.get("/log/:id", async (req, res) => {
-  return res.json(await getLog(req.params.id));
-});
-
-app.get("/logs", async (req, res) => {
-  // query params
-  const { start_time, end_time, pointer, n_prompts} = req.query;
-
-  res.json(await getLogs(
-    Number(start_time) || 0, 
-    Number(end_time) || Date.now(), 
-    Number(pointer) || 0, 
-    Number(n_prompts) ||  10
-  ))
-})
 
 app.use("/v1", openaiRouter);
 

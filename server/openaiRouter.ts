@@ -1,8 +1,15 @@
-import OpenAI from "https://deno.land/x/openai@v4.67.3/mod.ts";
-import { Router } from "npm:express";
+import OpenAI from "openai";
+import { Router } from "express";
 import { addLog } from "./chromia.ts";
+import { whitelistMiddleware } from "./whitelistMiddleware.ts";
 
 const router = Router();
+
+router.use(whitelistMiddleware);
+
+router.get("/", (req, res) => {
+  res.send("OpenAI Compatible Router on Chromia");
+});
 
 router.post("/chat/completions", async (req, res) => {
   const authorization = req.headers["authorization"];
@@ -10,9 +17,10 @@ router.post("/chat/completions", async (req, res) => {
     res.status(401).send("Unauthorized");
     return;
   }
-  const baseURL =
+  const openAIBaseUrl =
     req.headers["x-openai-base-url"] || "https://api.openai.com/v1";
-console.log("baseURL", baseURL);
+  const baseURL =
+    typeof openAIBaseUrl === "string" ? openAIBaseUrl : openAIBaseUrl[0];
 
   const openai = new OpenAI({
     apiKey: authorization.replace("Bearer ", ""),
@@ -41,7 +49,7 @@ console.log("baseURL", baseURL);
       assistant_reply: response.choices[0].message.content || "",
       finish_reason: response.choices[0].finish_reason,
       response_raw: JSON.stringify(response),
-    })
+    });
 
     res.json(response);
   } catch (error) {

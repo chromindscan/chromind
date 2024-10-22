@@ -1,0 +1,22 @@
+{
+  "name": "server",
+  "scripts": {
+    "start": "bun run main.ts"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "bun-types": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "buffer": "^6.0.3",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "openai": "^4.68.1",
+    "postchain-client": "^1.19.0"
+  },
+  "module": "index.ts",
+  "type": "module"
+}
