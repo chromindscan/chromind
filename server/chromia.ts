@@ -87,36 +87,3 @@ export async function addLog({
     signatureProvider
   );
 }
-
-export async function getLogs(
-  start_time: number,
-  end_time: number,
-  pointer: number,
-  n_prompts: number
-) {
-  const client = await initClient();
-  const logs = await client.query({
-    name: "get_logs",
-    args: {
-      start_time,
-      end_time,
-      pointer,
-      n_prompts,
-    },
-  });
-
-  return logs;
-}
-
-export async function getLog(
-  uuid: string
-) {
-  const client = await initClient();
-  const log = await client.query({
-    name: "get_log",
-    args: {
-      uuid,
-    },
-  });
-  return log
-}

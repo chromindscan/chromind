@@ -1,6 +1,7 @@
 <!-- src/components/LogList.vue -->
 <template>
   <div class="log-list">
+    <h2>Address: {{address}}</h2>
     <div v-if="isLoading" class="status-message loading">Loading logs...</div>
     <div v-if="error" class="status-message error">{{ error }}</div>
 
@@ -41,6 +42,12 @@ import { createClient } from 'postchain-client';
 
 export default {
   name: 'LogList',
+  props: {
+    address: {
+      type: String,
+      required: true,
+    }
+  },
   data() {
     return {
       logs: [],
@@ -65,6 +72,7 @@ export default {
         const result = await client.query({
           name: 'get_logs',
           args: {
+            address: this.address,
             start_time: 0,
             end_time: Date.now(),
             pointer: 0,

@@ -1,6 +1,48 @@
 module;
 
+object owner {
+    mutable address: pubkey = x"03EE16E285050088557DF422D0CF55736C4C355999E64D2D3547CFB581CDC3136B";
+}
+
+function is_owner() {
+    require(op_context.is_signer(owner.address), "Only the owner can call this operation");
+}
+
+entity allowlist {
+    address: byte_array;
+    key address;
+}
+
+query get_top_allowlist() {
+    return allowlist @* {} (
+        @sort_desc @omit .address,
+        address= .address
+    ) offset 0 limit 10;
+}
+
+query check_allowlist(address: byte_array): allowlist? {
+    return allowlist @? { .address == address };
+}
+
+operation add_allowlist(address: byte_array) {
+    is_owner();
+    create allowlist(address);
+}
+
+operation remove_allowlist(address: byte_array) {
+    is_owner();
+    delete allowlist @ { .address == address };
+}
+
+function is_allowlist(): byte_array {
+    val signer = op_context.get_signers()[0];
+    require(allowlist @? { .address == signer }, "Only allowlisted users can call this operation");
+    return signer;
+}
+
 entity open_ai_logs {
+    address: byte_array;
+
     uuid: text;
     key uuid;
     chat_id: text;
@@ -28,6 +70,7 @@ entity open_ai_logs {
 }
 
 struct open_ai_logs_dto {
+    address: byte_array;
     uuid: text;
     chat_id: text;
     base_url: text;
@@ -68,8 +111,10 @@ operation add_log(
     finish_reason: text,
     response_raw: json
 ) {
+    val addr = is_allowlist();
     val uuid = request_model + "-" + chat_id + "-" + op_context.last_block_time;
     create open_ai_logs (
+        address = addr,
         uuid,
         chat_id,
         base_url,
@@ -96,6 +141,7 @@ query get_log(uuid: text): open_ai_logs_dto {
         .uuid == uuid
     } (
         open_ai_logs_dto (
+            .address,
             .uuid,
             .chat_id,
             .base_url,
@@ -126,17 +172,20 @@ query get_logs_count() {
 }
 
 query get_logs(
+    address: byte_array,
     start_time: integer,
     end_time: integer,
     pointer: integer,
     n_prompts: integer,
 ): (pointer: integer, logs: list<open_ai_logs_dto>) {
     val logs = open_ai_logs @* {
+        .address == .address,
         .created_at > start_time,
         .created_at < end_time,
     } (
         @sort_desc @omit .created_at,
         open_ai_logs_dto (
+            address = .address,
             uuid = .uuid,
             chat_id = .chat_id,
             base_url = .base_url,

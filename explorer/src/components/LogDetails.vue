@@ -9,6 +9,14 @@
 
     <div v-if="!isLoading && !error" class="details-container">
       <div class="detail-section">
+        <div class="detail-title">Address:</div>
+        <div class="detail-content">
+          <router-link :to="`/address/${uint8ArrayToHex(log.address)}`" class="uuid-link">
+            {{ uint8ArrayToHex(log.address) }}
+          </router-link>
+        </div>
+      </div>
+      <div class="detail-section">
         <div class="detail-title">Timestamp:</div>
         <div class="detail-content">{{ formatTimestamp(log.created_at) }}</div>
       </div>
@@ -112,7 +120,8 @@
 </template>
 
 <script>
-import { createClient } from "postchain-client";
+import { getClient } from "../chromia";
+import { uint8ArrayToHex } from "../util";
 
 export default {
   name: "LogDetails",
@@ -140,6 +149,7 @@ export default {
     },
   },
   methods: {
+    uint8ArrayToHex,
     formatTimestamp(timestamp) {
       if (!timestamp) return "N/A";
       const date = new Date(timestamp);
@@ -154,11 +164,7 @@ export default {
     },
     async fetchLogDetails() {
       try {
-        const client = await createClient({
-          nodeUrlPool: "http://localhost:7740",
-          blockchainIid: 0,
-        });
-
+        const client = await getClient();
         const result = await client.query({
           name: "get_log",
           args: {
@@ -167,6 +173,7 @@ export default {
         });
         if (result) {
           this.log = result;
+          console.log(result);
         } else {
           throw new Error("Log not found.");
         }
