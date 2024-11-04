@@ -1,5 +1,5 @@
 blockchains:
-  openai-db:
+  llm_db:
     module: main
 compile:
   rellVersion: 0.13.5
@@ -8,3 +8,10 @@ database:
 test:
   modules:
     - test
+deployments:
+  mainnet: 
+    brid: x"7E5BE539EF62E48DDA7035867E67734A70833A69D2F162C457282C319AA58AE4" 
+    url: https://system.chromaway.com:7740 
+    container: 83412ea8c55157dce30d5de7b10dfc807e0447fe8ba8bd2107c45b7060e60d58
+    chains:
+      llm_db: x"E55CAEA35948B8FA13F9E19B201D5A93BAA664AD57E6CE52AE9022B5024B8083"

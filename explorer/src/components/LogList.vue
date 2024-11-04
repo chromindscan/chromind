@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { createClient } from 'postchain-client';
+import { getClient } from '../chromia';
 
 export default {
   name: 'LogList',
@@ -64,11 +64,7 @@ export default {
     },
     async fetchLogs() {
       try {
-        const client = await createClient({
-          nodeUrlPool: 'http://localhost:7740',
-          blockchainIid: 0,
-        });
-
+        const client = await getClient();
         const result = await client.query({
           name: 'get_logs',
           args: {
