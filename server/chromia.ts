@@ -15,8 +15,8 @@ const initClient = async () => {
   }
 
   chromiaClient = await createClient({
-    nodeUrlPool: "http://localhost:7740",
-    blockchainIid: 0,
+    directoryNodeUrlPool: ["https://dapps0.chromaway.com:7740"],
+    blockchainRid: "E55CAEA35948B8FA13F9E19B201D5A93BAA664AD57E6CE52AE9022B5024B8083",
   });
   return chromiaClient;
 };

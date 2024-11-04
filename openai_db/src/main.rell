@@ -112,7 +112,7 @@ operation add_log(
     response_raw: json
 ) {
     val addr = is_allowlist();
-    val uuid = request_model + "-" + chat_id + "-" + op_context.last_block_time;
+    val uuid = request_model + "-" + chat_id;
     create open_ai_logs (
         address = addr,
         uuid,
