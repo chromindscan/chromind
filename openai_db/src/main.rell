@@ -179,7 +179,7 @@ query get_logs(
     n_prompts: integer,
 ): (pointer: integer, logs: list<open_ai_logs_dto>) {
     val logs = open_ai_logs @* {
-        .address == .address,
+        .address == address,
         .created_at > start_time,
         .created_at < end_time,
     } (
